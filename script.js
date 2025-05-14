@@ -3,7 +3,7 @@
 const MAX_CONSECUTIVE_VACATION_DAYS_TO_SUGGEST_AS_ONE_CHUNK = 4;
 
 // --- DOM Element References ---
-let yearInput, ptoInput, generateButton, resultsArea, statusArea, publicHolidaysDisplay, publicHolidaysList, displayYearPh; // Added ptoInput
+let yearInput, generateButton, resultsArea, statusArea, publicHolidaysDisplay, publicHolidaysList, displayYearPh;
 
 // --- Date Helper Functions ---
 const addDays = (date, days) => {
@@ -326,7 +326,6 @@ function displayResults(opportunities, year) {
 
 function handleGenerateClick() {
     const yearValue = parseInt(yearInput.value, 10);
-    const ptoValue = parseInt(ptoInput.value, 10); // Get PTO value
 
     if (isNaN(yearValue) || yearValue < 1900 || yearValue > 2300) {
         statusArea.innerHTML = '<p class="text-red-500">Please enter a valid year (1900-2300).</p>';
@@ -334,14 +333,6 @@ function handleGenerateClick() {
         publicHolidaysDisplay.classList.add('hidden');
         return;
     }
-    // Optional: Validate PTO value if needed, e.g., ptoValue < 0
-    if (isNaN(ptoValue) || ptoValue < 0) {
-        statusArea.innerHTML = '<p class="text-red-500">Please enter a valid number for PTO days (0 or more).</p>';
-        resultsArea.innerHTML = '';
-        publicHolidaysDisplay.classList.add('hidden');
-        return;
-    }
-
 
     statusArea.innerHTML = '<div class="loader"></div><p>Calculating suggestions...</p>';
     resultsArea.innerHTML = ''; 
@@ -358,14 +349,11 @@ function handleGenerateClick() {
             const ops = generateVacationOpportunitiesJS(yearValue, freeBlocks, ph);
             displayResults(ops, yearValue);
 
-            let message = `Showing suggestions for ${yearValue}.`;
             if (ops.length === 0) {
-                message = `No specific high-value opportunities found for ${yearValue}.`;
+                statusArea.innerHTML = `<p>No specific high-value opportunities found for ${yearValue}.</p>`;
+            } else {
+                statusArea.innerHTML = `<p>Showing suggestions for ${yearValue}.</p>`;
             }
-            // You can now use ptoValue if you want to display it or use it in further logic
-            // For example: message += ` You have ${ptoValue} PTO days.`;
-            statusArea.innerHTML = `<p>${message}</p>`;
-
         } catch (error) {
             console.error("Error generating suggestions:", error);
             statusArea.innerHTML = `<p class="text-red-600">Error: ${error.message || 'Could not generate suggestions.'}</p>`;
@@ -378,7 +366,6 @@ function handleGenerateClick() {
 // --- Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
     yearInput = document.getElementById('yearInput');
-    ptoInput = document.getElementById('ptoInput'); // Get the new PTO input element
     generateButton = document.getElementById('generateButton');
     resultsArea = document.getElementById('resultsArea');
     statusArea = document.getElementById('statusArea');
@@ -386,6 +373,6 @@ document.addEventListener('DOMContentLoaded', () => {
     publicHolidaysList = document.getElementById('publicHolidaysList');
     displayYearPh = document.getElementById('displayYearPh');
 
-    statusArea.innerHTML = '<p>Enter a year and PTO days, then click "Generate".</p>'; // Updated initial message
+    statusArea.innerHTML = '<p>Enter a year and click "Generate".</p>';
     generateButton.addEventListener('click', handleGenerateClick);
 });
