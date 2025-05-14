@@ -6,7 +6,7 @@ This application analyzes a given year, identifies all public holidays (includin
 
 ## 🚀 Live Demo
 
-You can try out the Cyprus Vacation Optimizer live at: **[https://j1mb0o.github.io/pages-temp-demo/](https://j1mb0o.github.io/pages-temp-demo/)**
+You can try out the Cyprus Vacation Optimizer live at: **[https://j1mb0o.github.io/cyprus-vacation-optimizer-web/](https://j1mb0o.github.io/cyprus-vacation-optimizer-web/)**
 
 ## ✨ Features
 
